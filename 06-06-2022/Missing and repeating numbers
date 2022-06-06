@@ -1,0 +1,22 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+public class Solution {
+
+    public static int[] missingAndRepeating(ArrayList<Integer> arr, int n) {
+        HashSet<Integer> set = new HashSet<>();
+        int r = 0;
+        for(int i : arr){
+            if(!set.add(i)){
+                r = i;
+            }
+        }
+        int m = 0;
+        for(int i = 1; i <= n; i++){
+            if(!set.contains(i)){
+                m = i;
+            }
+        }
+        
+        return new int[]{m, r};
+    }
+}
