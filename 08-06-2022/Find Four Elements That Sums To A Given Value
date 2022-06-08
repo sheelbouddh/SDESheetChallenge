@@ -1,0 +1,47 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+  public static String fourSum(int[] arr, int target, int n) {
+        Arrays.sort(arr);
+        return kSum(arr, target, 0, 4) == true ? "Yes" : "No";
+  }
+    
+    public static boolean kSum(int[] nums, int target, int start, int k) {
+        
+        if (start == nums.length) {
+            return false;
+        }
+        
+        int average_value = target / k;
+      
+        if  (nums[start] > average_value || average_value > nums[nums.length - 1]) {
+            return false;
+        }
+        
+        if (k == 2) {
+            return twoSum(nums, target, start);
+        }
+    
+        for (int i = start; i < nums.length; ++i) {
+                      if(kSum(nums, target - nums[i], i + 1, k - 1)){
+                          return true;
+                      }
+        }
+    
+        return false;
+    }
+        
+    public static boolean twoSum(int[] nums, int target, int start) {
+        Set<Integer> s = new HashSet<>();
+    
+        for (int i = start; i < nums.length; ++i) {
+            if (s.contains(target - nums[i])) {
+                    return true;
+            }
+            s.add(nums[i]);
+        }
+                                                  
+        return false;
+    }
+
+}
