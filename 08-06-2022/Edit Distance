@@ -1,0 +1,34 @@
+import java.util.*;
+public class Solution {
+    static int[][] t;
+    public static int editDistance(String str1, String str2) {
+        t = new int[str1.length()+1][str2.length()+1];
+        for(int[] i: t){
+            Arrays.fill(i, -1);
+        }
+        return edit(str1, str2, str1.length()-1, str2.length()-1);
+    }
+    
+    static int edit(String a, String b, int i, int j){
+        if(i < 0 || j < 0){
+            return Math.max(i, j)+1;
+        }
+        
+        if(t[i][j] != -1){
+            return t[i][j];
+        }
+        int min = Integer.MAX_VALUE;
+        if(a.charAt(i) == b.charAt(j)){
+            min = Math.min(min, edit(a, b, i-1, j-1));
+        }else{
+            int r = 1 + edit(a, b, i-1, j-1);
+            int ins = 1 + edit(a, b, i, j-1);
+            int d = 1 + edit(a, b, i-1, j);
+            int temp = Math.min(d, Math.min(r, ins));
+            min = Math.min(temp, min);
+        }
+        
+        return t[i][j] = min;
+        
+    }
+}
