@@ -1,0 +1,23 @@
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+	public static int subarraysXor(ArrayList<Integer> arr, int x) {
+		Map<Integer, Integer> map = new HashMap<>();
+        int cur = 0;
+        int max = 0;
+        for(int i = 0; i < arr.size(); i++){
+            cur = cur ^ arr.get(i);
+            if(cur == x){
+                max++;
+            }
+            if(map.containsKey(cur ^ x)){
+                max += map.get(cur^x);
+            }
+            map.put(cur, map.getOrDefault(cur, 0)+1);
+        }
+        
+        return max;
+	}
+}
