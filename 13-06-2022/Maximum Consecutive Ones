@@ -1,0 +1,40 @@
+import java.util.ArrayList;
+
+public class Solution {
+	public static int longestSubSeg(ArrayList<Integer> arr , int n, int k) {
+		int i = 0;
+        int j = 0;
+        int max = 0;
+        int cur = 0;
+        
+        while(j < n){
+            if(arr.get(j) == 0){
+                if(k > 0){
+                    cur++;
+                    k--;
+                }else{
+                    max = Math.max(cur, max);
+                    while(k <= 0){
+                        if(arr.get(i) == 0){
+                            cur--;
+                            k++;
+                        }else{
+                            cur--;
+                        }
+                        i++;
+                    }
+                    
+                    if(k > 0){
+                        cur++;
+                        k--;
+                    }
+                }
+            }else{
+                cur++;
+            }
+            j++;
+        }
+        
+        return Math.max(max, cur);
+	}
+}
