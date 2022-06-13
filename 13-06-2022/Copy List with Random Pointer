@@ -1,0 +1,52 @@
+import java.util.* ;
+import java.io.*; 
+/*************************************************************
+
+    Following is the LinkedListNode class structure
+
+    class LinkedListNode<T> {
+	    T data;
+	    LinkedListNode<T> next;
+	    LinkedListNode<T> random;
+
+	    public LinkedListNode(T data) {
+		    this.data = data;
+	    }
+    }
+
+*************************************************************/
+
+public class Solution {
+	public static LinkedListNode<Integer> cloneRandomList(LinkedListNode<Integer> head) {
+        if(head == null) return head;
+		LinkedListNode<Integer> cur = head;
+        while(cur != null){
+            LinkedListNode<Integer> next = cur.next;
+            cur.next = new LinkedListNode<Integer>(cur.data);
+            cur.next.next = next;
+            cur = next;
+        }
+        
+        cur = head;
+        while(cur != null){
+            if(cur.random != null){
+                cur.next.random = cur.random.next;
+            }
+            
+            cur = cur.next.next;
+        }
+        
+        LinkedListNode<Integer> copyHead = head.next;
+        LinkedListNode<Integer> copy = copyHead;
+        cur = head;
+        while(copy.next != null){
+            cur.next = cur.next.next;
+            cur = cur.next;
+            
+            copy.next = copy.next.next;
+            copy = copy.next;
+        }
+        cur.next = cur.next.next;
+        return copyHead;
+	}
+}
