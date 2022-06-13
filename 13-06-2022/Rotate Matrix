@@ -1,0 +1,58 @@
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+    public static void rotateMatrix(ArrayList<ArrayList<Integer>> mat, int n, int m) {
+        int row = 0;
+        int col = 0;
+        int lastRow = n-1;
+        int lastCol = m-1;
+        int prev = 0, cur = 0;
+        
+        while(row < lastRow && col < lastCol){
+            if(row == lastRow || col == lastCol) break;
+            
+            prev = mat.get(row+1).get(col);
+            
+            // for left to right
+            for(int i = col; i <= lastCol; i++){
+                cur = mat.get(row).get(i);
+                mat.get(row).set(i, prev);
+                prev = cur;
+            }
+            row++;
+            
+            //for top to bottom
+            for(int i = row; i <= lastRow; i++){
+                cur = mat.get(i).get(lastCol);
+                mat.get(i).set(lastCol, prev);
+                prev = cur;
+            }
+            lastCol--;
+            
+            //for right to left
+            if(row <= lastRow){
+                for(int i = lastCol; i>= col; i--){
+                    cur = mat.get(lastRow).get(i);
+                    mat.get(lastRow).set(i, prev);
+                    prev = cur;
+                }
+                
+            }
+            lastRow--;
+            
+            //for bottom to top
+            if(col <= lastCol){
+                for(int i = lastRow; i>=row; i--){
+                    cur = mat.get(i).get(col);
+                    mat.get(i).set(col, prev);
+                    prev = cur;
+                }
+                
+            }
+            col++;
+        }
+        
+    }
+}
