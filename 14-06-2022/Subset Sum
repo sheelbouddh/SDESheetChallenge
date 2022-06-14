@@ -1,0 +1,23 @@
+import java.util.*;
+public class Solution {
+    
+    public static ArrayList<Integer> subsetSum(int num[]) {
+        ArrayList<Integer> list = subset(num, 0, 0);
+        Collections.sort(list);
+        return list;
+    }
+    static ArrayList<Integer> subset(int[] nums, int i, int sum){
+        ArrayList<Integer> list = new ArrayList<>();
+        if(i == nums.length){
+            list.add(sum);
+            return list;
+        }
+        
+        list.addAll(subset(nums, i+1, sum+nums[i]));
+        list.addAll(subset(nums, i+1, sum));
+        
+        return list;
+    }
+    
+
+}
