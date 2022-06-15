@@ -1,0 +1,32 @@
+import java.util.*;
+public class Solution {
+    static HashSet<ArrayList<Integer>> set = new HashSet<>();
+    public static ArrayList<ArrayList<Integer>> uniqueSubsets(int n, int arr[]) {
+        Arrays.sort(arr);
+        ArrayList<ArrayList<Integer>> list = subset(arr, 0, new ArrayList<Integer>());
+        return list;
+    }
+    
+    static ArrayList<ArrayList<Integer>> subset(int[] arr, int i, ArrayList<Integer> cur){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        
+        if(i == arr.length){
+            ArrayList<Integer> temp = new ArrayList<>(cur);
+//             Collections.sort(temp);
+            if(set.add(temp)){
+                list.add(temp);    
+            }
+            return list;
+        }
+        
+        cur.add(arr[i]);
+        if(set.add(cur)){
+            list.add(new ArrayList<>(cur));
+        }
+        list.addAll(subset(arr, i+1, cur));
+        cur.remove(cur.size()-1);
+        list.addAll(subset(arr, i+1, cur));
+        return list;
+    }
+
+}
