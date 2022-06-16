@@ -1,0 +1,36 @@
+import java.util.*;
+public class Solution {
+    public static List<List<String>> partition(String s) {
+        return partition(s, 0, new ArrayList<>());
+    }
+    
+    static List<List<String>> partition(String s, int i, List<String> cur){
+        List<List<String>> list = new ArrayList<>();
+        if(i >= s.length()){
+            list.add(new ArrayList<>(cur));
+            return list;
+        }
+        
+        for(int k = i; k < s.length();k++){
+            if(pal(s, i, k)){
+                cur.add(s.substring(i, k+1));
+                list.addAll(partition(s, k+1, cur));
+                cur.remove(cur.size()-1);
+            }
+        }
+        
+        return list;
+    }
+    
+    static boolean pal(String s, int i, int j){
+        while(i < j){
+            if(s.charAt(i) != s.charAt(j)){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        
+        return true;
+    }
+}
