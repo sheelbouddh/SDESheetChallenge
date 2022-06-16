@@ -1,0 +1,26 @@
+import java.util.*;
+public class Solution {
+    public static List<String> findPermutations(String s) {
+        boolean[] visit = new boolean[s.length()+1];
+        return permutation(s, "", visit);
+    }
+    
+    static List<String> permutation(String s , String cur, boolean[] visit){
+        List<String> list = new ArrayList<>();
+        if(cur.length() == s.length()){
+            String temp = cur;
+            list.add(temp);
+            return list;
+        }
+        for(int i = 0; i < s.length(); i++){
+            if(!visit[i]){
+                visit[i] = true;
+                list.addAll(permutation(s, cur+s.charAt(i), visit));
+                visit[i] = false;
+            }
+        }
+        
+        return list;
+    }
+
+}
