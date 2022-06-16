@@ -1,0 +1,37 @@
+import java.util.ArrayList;
+import java.util.*;
+public class Solution 
+{
+    public static ArrayList<ArrayList<Integer>> combinationSum2(ArrayList<Integer> arr, int n, int target)
+    {
+        Collections.sort(arr);
+        return sum(arr, 0, target, new ArrayList<>());
+    }
+    
+    static ArrayList<ArrayList<Integer>> sum(ArrayList<Integer> arr, int index, int target, ArrayList<Integer> cur){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        if(target == 0){
+            list.add(new ArrayList<>(cur));
+            return list;
+        }
+        
+        if(index >= arr.size()){
+            return list;
+        }
+        
+        for(int i = index; i < arr.size(); i++){
+            if(i > index && arr.get(i) == arr.get(i-1)){
+                continue;
+            }
+            
+            if(target - arr.get(i) >= 0){
+                cur.add(arr.get(i));
+                list.addAll(sum(arr, i+1, target-arr.get(i), cur));
+                cur.remove(cur.size()-1);
+            }
+            
+            
+        }
+        return list;
+    }
+}
