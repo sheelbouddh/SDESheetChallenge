@@ -1,0 +1,30 @@
+public class Solution 
+{
+    public static int getTotalIslands(int[][] mat) 
+	{
+        int count = 0;
+        for(int i = 0; i < mat.length; i++){
+            for(int j = 0; j < mat[0].length; j++){
+                if(mat[i][j] == 1){
+                    count++;
+                    dfs(mat, i, j);
+                }
+            }
+        }
+        
+        return count;
+    }
+    static int[][] arr = {
+        {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1,-1}, {-1, 1}, {-1,-1}
+    };
+    static void dfs(int[][] mat, int i, int j){
+        if(i < 0 || i >= mat.length || j < 0 || j >= mat[0].length || mat[i][j] == 0){
+            return;
+        }
+        
+        mat[i][j] = 0;
+        for(int[] d: arr){
+            dfs(mat, i+d[0], j+d[1]);
+        }
+    }
+}
