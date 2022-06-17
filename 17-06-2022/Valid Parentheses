@@ -1,0 +1,35 @@
+import java.util.*;
+public class Solution {
+    public static boolean isValidParenthesis(String s) {
+        Stack<Character> stack = new Stack<>();
+        
+        for(char c: s.toCharArray()){
+            if(c == ')'){
+                if(stack.isEmpty() || stack.peek() != '('){
+                    return false;
+                }                
+                stack.pop();
+                continue;
+            }
+            if(c == '}'){
+                if(stack.isEmpty() || stack.peek() != '{'){
+                    return false;
+                }                
+                stack.pop();
+                continue;
+            }
+            if(c == ']'){
+                if(stack.isEmpty() || stack.peek() != '['){
+                    return false;
+                }                
+                stack.pop();
+                continue;
+            }
+            
+            
+            stack.push(c);
+        }
+        
+        return stack.size() == 0 ? true : false;
+    }
+}
