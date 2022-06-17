@@ -1,0 +1,23 @@
+import java.util.*;
+public class Solution {
+    public static List<List<Integer>> getTreeTraversal(BinaryTreeNode<Integer> root) {
+        List<List<Integer>> list = new ArrayList<>();
+        for(int i = 0; i < 3; i++){
+            list.add(new ArrayList<>());
+        }
+        
+        traversal(root, list);
+        return list;
+    }
+    
+    static void traversal(BinaryTreeNode<Integer> root, List<List<Integer>> list){
+        if(root == null){
+            return;
+        }
+        list.get(1).add(root.data);
+        traversal(root.left, list);
+        list.get(0).add(root.data);
+        traversal(root.right, list);
+        list.get(2).add(root.data);
+    }
+}
