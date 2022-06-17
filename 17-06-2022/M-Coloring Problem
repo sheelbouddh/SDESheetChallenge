@@ -1,0 +1,48 @@
+import java.util.*;
+public class Solution {
+	public static String graphColoring(int[][] mat, int m) {
+		List<List<Integer>> list = new ArrayList<>();
+        for(int i= 0; i < mat.length; i++){
+            list.add(new ArrayList<>());
+        }
+        int[] col = new int[mat.length+1];
+        for(int i =0 ; i < mat.length; i++){
+            for(int j = 0; j < mat[i].length; j++){
+                if(mat[i][j] == 1){
+                    list.get(i).add(j);
+                    list.get(j).add(i);
+                }
+            }
+        }
+        
+       return color(list, 0, col, m) ? "YES" : "NO";
+ 	}
+    
+    static boolean color(List<List<Integer>> list, int ver, int[] col, int m){
+        if(ver == list.size()){
+            return true;
+        }
+        
+        for(int i = 1; i <= m; i++){
+            if(isSafe(list, ver, i, col)){
+                col[ver] = i;
+                if(color(list, ver+1, col, m)){
+                    return true;
+                }
+                col[ver] = 0;
+            }
+        }
+        
+        return false;
+    }
+    
+    static boolean isSafe(List<List<Integer>> list, int ver, int color, int[] col){
+        for(int i : list.get(ver)){
+            if(color == col[i]){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
