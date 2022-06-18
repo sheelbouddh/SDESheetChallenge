@@ -1,0 +1,26 @@
+public class Solution {
+    public static double findNthRootOfM(int n, long m) {
+    	double low = 1;
+        double high = m;
+        double esp = 1e-7;
+        
+        while((high-low) > esp){
+            double mid = (low + high)/2;
+            if(multiply(n, mid) > m){
+                high = mid;
+            }else{
+                low = mid;
+            }
+        }
+        
+        return low;
+    }
+    
+    static double multiply(int n, double m){
+        double ans = 1.0;
+        for(int i = 1; i <= n; i++){
+            ans = ans * m;
+        }
+        return ans;
+    } 
+}
