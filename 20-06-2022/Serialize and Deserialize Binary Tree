@@ -1,0 +1,62 @@
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    class TreeNode<T> 
+    {
+       public:
+        T data;
+        TreeNode<T> left;
+        TreeNode<T> right;
+
+        TreeNode(T data) 
+        {
+            this.data = data;
+            left = null;
+            right = null;
+        }
+    };
+
+************************************************************/
+
+
+public class Solution 
+{   
+    public static String serializeTree(TreeNode<Integer> root)
+    {    if(root == null){
+            
+            return "X";
+         }
+     
+        StringBuilder sb = new StringBuilder();
+        sb.append(root.data+",");
+        sb.append(serializeTree(root.left)+",");
+        sb.append(serializeTree(root.right));
+        return sb.toString();
+    }
+    
+    static int i;
+    public static TreeNode<Integer> deserializeTree(String str)
+    {    
+        i = 0;
+        String[] data = str.split(",");
+        return des(data);
+    }
+    
+    static TreeNode<Integer> des(String[] data){
+        if(data[i].equals("X")){
+            i++;
+            return null;
+        }
+        
+        TreeNode root = new TreeNode(Integer.valueOf(data[i++]));
+        root.left = des(data);
+        root.right = des(data);
+        return root;
+        
+    }
+    
+    
+    
+    
+}
