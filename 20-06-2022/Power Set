@@ -1,0 +1,26 @@
+import java.util.*;
+public class Solution {
+    static HashSet<ArrayList<Integer>> set = new HashSet<>();
+	public static ArrayList<ArrayList<Integer>> pwset(ArrayList<Integer> arr) {
+	    
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        set(arr, arr.size(), 0, list, new ArrayList<>());
+        return list;
+	}
+    
+    static void set(ArrayList<Integer> arr, int n, int i, ArrayList<ArrayList<Integer>> list, ArrayList<Integer> cur){
+        if(i == n){
+            ArrayList<Integer> temp = new ArrayList<>(cur);
+            if(set.add(temp)){
+                list.add(new ArrayList<>(temp));
+            }
+            return;
+        }
+        
+        set(arr, n, i+1, list, cur);
+        cur.add(arr.get(i));
+        set(arr, n, i+1, list, cur);
+        cur.remove(cur.size()-1);
+    }
+}
+
