@@ -1,0 +1,42 @@
+import java.util.*;
+public class Solution {
+
+    public static int chessTournament(int[] arr, int n,  int c) 
+	{
+        Arrays.sort(arr);
+        int s = 1;
+        int e = arr[n-1] -arr[0];
+        int ans = 0;
+        while(s <= e){
+            int m = (s+e)/2;
+            
+            if(possible(arr, n, c, m)){
+                ans = m;
+                s = m+1;
+            }else{
+                e = m-1;
+            }
+        }
+        
+        return ans;
+    }
+    
+    static boolean possible(int[] arr, int n, int c, int dist){
+        int room = 1;
+        int place = arr[0];
+        for(int i =1; i < n; i++){
+            if(arr[i] - place >= dist){
+                room++;
+                place = arr[i];
+            }
+            
+            if(room >= c){
+                return true;
+            }
+        }
+        
+        return false;
+        
+    }
+
+}
