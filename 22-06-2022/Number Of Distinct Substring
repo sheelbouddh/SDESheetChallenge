@@ -1,0 +1,24 @@
+import java.util.*;
+public class Solution {
+    
+    public static int distinctSubstring(String word) {
+        HashSet<String> set = new HashSet<>();
+        distinct(word, 0, word.length()-1, set);
+        return set.size();
+    }
+    
+    static void distinct(String s, int i, int j, HashSet<String> set){
+        if(i > j){
+            return;
+        }
+        
+        String cur = s.substring(i, j+1);
+        
+        if(set.contains(cur)){
+            return;
+        }
+        set.add(cur);
+        distinct(s, i+1, j, set);
+        distinct(s, i, j-1, set);
+    }
+}
