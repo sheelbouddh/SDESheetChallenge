@@ -1,0 +1,72 @@
+class TrieNode{
+    TrieNode[] child;
+    int countPrefix;
+    int countEnd;
+    TrieNode(){
+        countEnd = 0;
+        child = new TrieNode[26];
+        countPrefix = 0;
+    }
+}
+public class Trie {
+    TrieNode root;
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    public void insert(String word) {
+        TrieNode cur = root;
+        char[] arr = word.toCharArray();
+        for(int i =0 ; i < arr.length; i++){
+            int ind = arr[i] - 'a';
+            if(cur.child[ind] == null){
+                cur.child[ind] = new TrieNode();
+            }
+            cur.countPrefix++;
+            cur = cur.child[ind];
+        }
+        cur.countPrefix++;
+        cur.countEnd++;
+    }
+
+    public int countWordsEqualTo(String word) {
+        TrieNode cur = root;
+        char[] arr = word.toCharArray();
+        for(int i =0 ; i < arr.length; i++){
+            int ind = arr[i] - 'a';
+            if(cur.child[ind] == null) {
+                return 0;
+            }
+            cur = cur.child[ind];
+        }
+        
+        return cur.countEnd;
+    }
+
+    public int countWordsStartingWith(String word) {
+        TrieNode cur = root;
+        char[] arr = word.toCharArray();
+        for(int i =0 ; i < arr.length; i++){
+            int ind = arr[i] - 'a';
+            if(cur.child[ind] == null) {
+                return 0;
+            }
+            cur = cur.child[ind];
+        }
+        
+        return cur.countPrefix;
+    }
+
+    public void erase(String word) {
+        TrieNode cur = root;
+        char[] arr = word.toCharArray();
+        for(int i =0 ; i < arr.length; i++){
+            int ind = arr[i] - 'a';
+            cur.countPrefix--;
+            cur = cur.child[ind];
+        }
+        cur.countPrefix--;
+        cur.countEnd--;
+    }
+
+}
