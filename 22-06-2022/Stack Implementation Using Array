@@ -1,0 +1,22 @@
+import java.util.*;
+
+public class Stack {
+    ArrayList<Integer> list = new ArrayList<>();
+    void push(int num) {
+       list.add(0, num);
+    }
+    int pop() {
+        if(isEmpty()) return -1;
+        int val = list.get(0);
+        list.remove(0);
+        return val;
+    }
+    int top() {
+        if(isEmpty()) return -1;
+        int val = list.get(0);
+        return val;
+    }
+    int isEmpty() {
+        return list.size() == 0? 1 : 0;
+    }
+}
