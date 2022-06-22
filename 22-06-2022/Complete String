@@ -1,0 +1,34 @@
+import java.util.*;
+class Solution {
+
+  public static String completeString(int n, String[] a) {
+      Arrays.sort(a);
+      Set<String> set = new HashSet<>();
+      String ans = "";
+      for(String s: a){
+          set.add(s);
+          boolean valid = true;
+          StringBuilder sb = new StringBuilder(s);
+          for(int i = s.length()-1; i>0; i--){
+              String pref = sb.deleteCharAt(i).toString();
+              if(!set.contains(pref)){
+                  valid = false;
+                  break;
+              }
+          }
+          
+          if(valid){
+              if(s.length() > ans.length()){
+                  ans = s;
+              }else if(s.length() == ans.length()){
+                  if(ans.compareTo(s) > 0){
+                      ans = s;
+                  }
+              }
+          }
+      }
+      
+      return ans.length() == 0? "None" : ans;
+
+  }
+}
