@@ -1,0 +1,34 @@
+import java.util.*;
+public class Queue {
+    ArrayList<Integer> list;
+    Queue() {
+        list = new ArrayList<>();
+    }
+
+    /*----------------- Public Functions of Queue -----------------*/
+
+    boolean isEmpty() {
+        // Implement the isEmpty() function
+        return list.size() == 0;
+    }
+
+    void enqueue(int data) {
+        // Implement the enqueue() function
+        list.add(data);
+    }
+
+    int dequeue() {
+        // Implement the dequeue() function
+        if(isEmpty()) return -1;
+        int val = list.get(0);
+        list.remove(0);
+        return val;
+    }
+
+    int front() {
+        if(isEmpty()) return -1;
+        int val = list.get(0);
+        return val;
+    }
+
+}
