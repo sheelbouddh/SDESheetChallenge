@@ -1,0 +1,26 @@
+import java.util.*;
+public class Solution {
+    public static Boolean wordBreak(String[] arr, int n, String target) {
+        HashSet<String> set = new HashSet<>();
+        for(String s: arr){
+            set.add(s);
+        }
+        n = target.length();
+        int[] dp = new int[n];
+        
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j <= i; j++){
+                String cur = target.substring(j, i+1);
+                if(set.contains(cur)){
+                    if(j==0){
+                        dp[i] = 1;
+                    }else{
+                        dp[i] += dp[j-1];
+                    }
+                }
+            }
+        }
+        
+        return dp[n-1] > 0;
+    }
+}
