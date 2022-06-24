@@ -1,0 +1,49 @@
+/*********************************************
+
+    class BinaryTreeNode {
+        int val;
+        BinaryTreeNode left;
+        BinaryTreeNode right;
+
+        BinaryTreeNode(int val) {
+            this.val = val;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+*********************************************/
+
+import java.util.*;
+public class Solution {
+    public static ArrayList<Integer> bottomView(BinaryTreeNode root) {
+        HashMap<Integer, int[]> map = new HashMap<>();
+        view(root, 0, 0, map);
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i: map.keySet()){
+            list.add(i);
+        }
+        
+        Collections.sort(list);
+        for(int i = 0; i < list.size(); i++){
+            list.set(i, map.get(list.get(i))[1]);
+        }
+        return list;
+    }
+    
+    static void view(BinaryTreeNode root, int hpos, int vpos, HashMap<Integer, int[]> map){
+        if(root == null) return;
+        
+        if(map.containsKey(hpos)){
+            int[] temp = map.get(hpos);
+            temp = temp[0] > vpos ? temp : new int[]{vpos, root.val};
+            map.put(hpos, temp);
+        }else{
+            map.put(hpos, new int[]{vpos, root.val});
+        }
+        
+        
+        view(root.left, hpos-1, vpos+1, map);
+        view(root.right, hpos+1, vpos+1, map);
+    }
+}
