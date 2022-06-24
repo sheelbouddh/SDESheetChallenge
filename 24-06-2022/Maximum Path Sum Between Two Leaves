@@ -1,0 +1,43 @@
+/************************************************************
+
+    Following is the Tree node structure
+	
+	class TreeNode {
+		int data;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int data) {
+			this.data = data;
+			this.left = null;
+			this.right = null;
+		}
+
+	}
+
+************************************************************/
+
+public class Solution {
+    static long max;
+	public static long findMaxSumPath(TreeNode root) {
+		max = -1;
+        sum(root);
+        return max;
+	}
+    
+    static long sum(TreeNode root){
+        if(root == null) return -1;
+        
+        if(root.left == null && root.right == null) return root.data;
+        
+        long left = sum(root.left);
+        long right = sum(root.right);
+        
+        if(left != -1 && right != -1){
+            max = Math.max(root.data + left + right, max);
+        }
+        
+        
+        return Math.max(left, right) + root.data;
+    } 
+}
