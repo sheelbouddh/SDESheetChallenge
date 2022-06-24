@@ -1,0 +1,46 @@
+import java.util.*;
+public class Solution {
+    
+    public static String cycleDetection(int[][] edges, int n, int m) {
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        for(int i = 0; i <= n; i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int i = 0; i < edges.length; i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+        
+        boolean[] visit = new boolean[n+1];
+        for(int i = 1; i <= n; i++){
+            if(!visit[i]){
+                if(dfs(graph, i, visit, i)) return "Yes";
+            }
+        }
+        
+        return "No";
+    }
+    
+    static boolean dfs(ArrayList<ArrayList<Integer>> graph, int i, boolean[] visit, int prev){
+        if(visit[i] == true && prev != i){
+            return true;
+        }
+        
+        visit[i] = true;
+        ArrayList<Integer> cur = graph.get(i);
+        for(int u : cur){
+            if(!visit[u]){
+                if(dfs(graph, u, visit, i)){
+                    return true;
+                }
+            }else if(visit[u] && prev != u){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}
