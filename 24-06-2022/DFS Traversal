@@ -1,0 +1,44 @@
+import java.util.ArrayList;
+
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> depthFirstSearch(int v, int e, ArrayList<ArrayList<Integer>> edges) {
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        
+        for(int i =0 ; i< v; i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int i = 0; i < edges.size(); i++){
+            graph.get(edges.get(i).get(0)).add(edges.get(i).get(1));
+            graph.get(edges.get(i).get(1)).add(edges.get(i).get(0));
+        }
+        int count= 0;
+        boolean[] visit = new boolean[v];
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        for(int i = 0; i < v;i++){
+            if(!visit[i]){
+                count++;
+                ans.add(dfs(graph, i, visit));
+            }
+        }
+            
+        return ans;
+    }    
+    
+    static ArrayList<Integer> dfs(ArrayList<ArrayList<Integer>> graph, int i, boolean[] visit){
+        ArrayList<Integer> list = new ArrayList<>();
+        if(visit[i] == true){
+            return list;
+        }
+        
+        list.add(i);
+        visit[i] = true;
+        for(int u : graph.get(i)){
+            if(!visit[u]){
+                list.addAll(dfs(graph, u, visit));
+            }
+        }
+        
+        return list;
+    }
+}
