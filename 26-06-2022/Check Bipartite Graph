@@ -1,0 +1,47 @@
+import java.util.ArrayList;
+
+public class Solution {
+
+    public static boolean isGraphBirpatite(ArrayList<ArrayList<Integer>> edges) {
+
+        int n = edges.size();
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        for(int i = 0; i < edges.size(); i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int i = 0; i < edges.size(); i++){
+            for(int j = 0; j < edges.get(i).size(); j++){
+                if(edges.get(i).get(j) == 1){
+                    graph.get(i).add(j);
+                    graph.get(j).add(i);
+                }
+            }
+        }
+        int[] val = new int[n];
+        for(int i = 0; i < n;i++){
+            if(val[i] == 0){
+                if(!dfs(graph, i, val, 1)){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    static boolean dfs(ArrayList<ArrayList<Integer>> graph, int src, int[] val, int col){
+        if(val[src] != 0){
+            return val[src] == col;
+        }
+        
+        val[src] = col;
+        for(int nbr : graph.get(src)){
+            if(!dfs(graph, nbr, val, -col)){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
