@@ -1,0 +1,59 @@
+import java.util.*;
+
+public class Solution 
+{
+    public static ArrayList<ArrayList<Integer>> calculatePrimsMST(int n, int m, ArrayList<ArrayList<Integer>> g)
+    {
+        ArrayList<ArrayList<int[]>> graph = new ArrayList<>();
+        for(int i = 0; i <= n; i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int i = 0; i < m; i++){
+            int u = g.get(i).get(0);
+            int v = g.get(i).get(1);
+            int w = g.get(i).get(2);
+            
+            graph.get(u).add(new int[]{w, v});
+            graph.get(v).add(new int[]{w, u});
+        }
+        
+        int[] key = new int[n+1];
+        boolean[] mst = new boolean[n+1];
+        int[] parent = new int[n+1];
+        Arrays.fill(key, Integer.MAX_VALUE);
+        Arrays.fill(parent, -1);
+        key[1] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[0]-b[0]);
+        pq.offer(new int[]{key[1], 1});
+        
+        for(int i = 0; i< n-1; i++){
+            int[] cur = pq.poll();
+            int v = cur[1];
+            mst[v] = true;
+            
+            for(int j = 0; j < graph.get(v).size(); j++){
+                int[] nbr = graph.get(v).get(j);
+                int w = nbr[0];
+                int u = nbr[1];
+                
+                if(!mst[u] && w < key[u]){
+                    pq.offer(new int[]{w, u});
+                    parent[u] = v;
+                    key[u] = w;
+                }
+            }
+        }
+        
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        for(int i = 2; i <= n; i++){
+            ArrayList<Integer> temp = new ArrayList<>();
+            temp.add(parent[i]);
+            temp.add(i);
+            temp.add(key[i]);
+            ans.add(temp);
+        }
+        
+        return ans;
+    }
+}
