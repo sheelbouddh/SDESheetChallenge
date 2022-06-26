@@ -1,0 +1,48 @@
+import java.util.*;
+public class Solution {
+    static int findParent(int a, int[] parent){
+        if(parent[a] == a){
+            return a;
+        }
+        
+        return parent[a] = findParent(parent[a], parent);
+    }
+    static void union(int a, int b, int[] parent, int[] rank){
+        a = findParent(a, parent);
+        b = findParent(b, parent);
+        
+        if(rank[a] < rank[b]){
+            parent[a] = b;
+        }else if(rank[a] > rank[b]){
+            parent[b] = a;
+        }else{
+            parent[b] = a;
+            rank[a]++;
+        }
+    }
+    
+    
+    public static int kruskalMST(int n, int m, ArrayList<ArrayList<Integer>> graph) {
+        int[] parent = new int[n+1];
+        int[] rank = new int[n+1];
+        
+        for(int i = 1; i <= n; i++){
+            parent[i] = i;
+        }
+        
+        Collections.sort(graph, (a, b)-> a.get(2) - b.get(2));
+        int ans = 0;
+        for(ArrayList<Integer> cur: graph){
+            int u = cur.get(0);
+            int v = cur.get(1);
+            int w = cur.get(2);
+            
+            if(findParent(u, parent) != findParent(v, parent)){
+                ans += w;
+                union(u, v, parent, rank);
+            }
+        }
+        
+        return ans;
+    }
+}
