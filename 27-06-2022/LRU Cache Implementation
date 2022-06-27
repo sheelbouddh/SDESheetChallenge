@@ -1,0 +1,90 @@
+import java.util.Hashtable;
+
+class ListNode{
+    int key;
+    int val;
+    ListNode prev;
+    ListNode next;
+    
+    ListNode(int key, int val){
+        this.key = key;
+        this.val = val;
+    }
+}
+
+class LRUCache {
+    
+    Hashtable<Integer, ListNode> cache = new Hashtable<>();
+    int count;
+    int capacity;
+    ListNode tail;
+    ListNode head;
+
+    void addNode(ListNode node){
+        node.prev = head;
+        node.next = head.next;
+        
+        head.next = node;
+        node.next.prev = node;
+    }
+    
+    
+    
+    void removeNode(ListNode node){
+        ListNode pre = node.prev;
+        ListNode nex = node.next;
+        
+        pre.next = nex;
+        nex.prev = pre;
+    }
+    void moveToHead(ListNode node){
+        removeNode(node);
+        addNode(node);
+    }
+    
+    ListNode popTail(){
+        ListNode res = tail.prev;
+        removeNode(res);
+        return res;
+    }
+    public LRUCache(int capacity) {
+        this.count = 0;
+        this.capacity = capacity;
+    
+        tail = new ListNode(-1, -1);
+        head = new ListNode(-1, -1);
+        tail.next = null;
+        head.prev = null;
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public int get(int key) {
+        ListNode node = cache.get(key);
+        if(node == null) return -1;
+        
+        moveToHead(node);
+        return node.val;
+    }
+    
+    public void put(int key, int value) {
+        ListNode node = cache.get(key);
+        if(node == null){
+            ListNode cur = new ListNode(key, value);
+            cache.put(key, cur);
+            addNode(cur);
+            count++;
+            
+            if(count > capacity){
+                ListNode rem = popTail();
+                cache.remove(rem.key);
+                count--;
+            }
+            
+        }else{
+            node.val = value;
+            moveToHead(node);
+        }
+    }
+}
+
