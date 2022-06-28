@@ -1,0 +1,89 @@
+import java.util.*;
+class Node{
+    Node[] child;
+    Node(){
+        child = new Node[2];
+    }
+    
+    boolean containsKey(int bit){
+        return child[bit] != null;
+    }
+    Node get(int bit){
+        return child[bit];
+    }
+    
+    void put(int bit, Node node){
+        child[bit] = node;
+    }
+}
+
+class Trie{
+    private Node root;
+    Trie(){
+        root = new Node();
+    }
+    
+    void insert(int num){
+        Node cur = root;
+        for(int i = 31; i>= 0; i--){
+            int bit = (num >> i) & 1;
+            if(!cur.containsKey(bit)){
+                cur.put(bit, new Node());
+            }
+            
+            cur = cur.get(bit);
+        }
+    }
+    
+    int getMaxXor(int num){
+        Node cur = root;
+        int max = 0;
+        for(int i = 31; i >= 0; i--){
+            int bit = (num >> i) & 1;
+            if(cur.containsKey(1-bit)){
+                max = max | (1<<i);
+                cur = cur.get(1-bit);
+            }else{
+                cur = cur.get(bit);
+            }
+        }
+        
+        return max;
+    }
+}
+public class Solution {
+    public static ArrayList<Integer> maxXorQueries(ArrayList<Integer> arr, ArrayList<ArrayList<Integer>> queries) {
+        Map<ArrayList<Integer>, Integer> map = new HashMap<>();
+        Trie trie = new Trie();
+        for(int i = 0; i < queries.size(); i++){
+            map.put(queries.get(i), i);
+        }
+        int[] ans = new int[queries.size()];
+        Collections.sort(queries, (a, b) -> a.get(1) - b.get(1));
+        Collections.sort(arr);
+        int already = 0;
+        for(int i = 0; i < queries.size(); i++){
+            int ind = map.get(queries.get(i));
+            if(already == 0 && arr.get(0) > queries.get(i).get(1)){
+                ans[ind] = -1;
+                continue;
+            }
+            for(int j = already; j < arr.size(); j++){
+                if(arr.get(j) > queries.get(i).get(1)){
+                    break;
+                }
+                
+                trie.insert(arr.get(j));
+                already++;
+            }
+            
+            int maxCur = trie.getMaxXor(queries.get(i).get(0));
+            ans[ind] = maxCur;
+        }
+        ArrayList<Integer> res = new ArrayList<>();
+        for(int i : ans){
+            res.add(i);
+        }
+        return res;
+    }
+}
