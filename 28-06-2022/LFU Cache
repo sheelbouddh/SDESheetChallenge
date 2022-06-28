@@ -1,0 +1,113 @@
+import java.util.*;
+class Node{
+    int key;
+    int val;
+    int freq;
+    Node next;
+    Node prev;
+    Node(int key, int val){
+        this.key = key;
+        this.val = val;
+        this.freq = 1;
+    }
+}
+
+class DLinkedList{
+    Node head;
+    Node tail;
+    int listSize;
+    DLinkedList(){
+        listSize = 0;
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    void addNode(Node node){
+        node.next = head.next;
+        node.prev = head;
+        
+        head.next.prev = node;
+        head.next = node;
+        listSize++;
+    }
+    
+    void removeNode(Node node){
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+        listSize--;
+    }
+
+}
+class LFUCache {
+    Map<Integer, DLinkedList> freqMap;
+    Map<Integer, Node> cache;
+    int capacity;
+    int curSize;
+    int minFreq;
+
+    public LFUCache(int capacity) {
+        freqMap = new HashMap<>();
+        cache = new HashMap<>();
+        this.capacity = capacity;
+        curSize = 0;
+        minFreq = 0;
+    }
+    
+    public int get(int key) {
+        Node node = cache.get(key);
+        if(node == null){
+            return -1;
+        }
+        
+        update(node);
+        return node.val;
+    }
+    
+    public void put(int key, int value) {
+        if(capacity == 0){
+            return;
+        }
+        
+        if(cache.containsKey(key)){
+            Node node = cache.get(key);
+            node.val = value;
+            update(node);
+        }else{
+            
+            curSize++;
+            if(curSize > capacity){
+                DLinkedList minList = freqMap.get(minFreq);
+                Node prev = minList.tail.prev;
+                minList.removeNode(prev);
+                cache.remove(prev.key);
+                curSize--;
+            }
+            
+            minFreq = 1;
+            
+            Node node = new Node(key, value);
+            DLinkedList curList = freqMap.getOrDefault(1, new DLinkedList());
+            curList.addNode(node);
+            freqMap.put(1, curList);
+            cache.put(key, node);
+        }
+        
+    }
+    
+    void update(Node node){
+        int curFreq = node.freq;
+        DLinkedList curList = freqMap.get(curFreq);
+        curList.removeNode(node);
+        if(curList.listSize == 0 && curFreq == minFreq){
+            minFreq++;
+        }
+        
+        node.freq++;
+        DLinkedList newList = freqMap.getOrDefault(node.freq, new DLinkedList());
+        newList.addNode(node);
+        freqMap.put(node.freq, newList);
+    }
+}
+
