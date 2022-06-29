@@ -1,0 +1,51 @@
+public class Solution {
+    public static boolean findPattern(String p, String s) {
+        int n = s.length();
+        int m = p.length();
+        
+        int[] lpps = new int[m];
+        lps(p, lpps);
+        
+        int i = 0, j = 0;
+        while(i < n){
+            if(s.charAt(i) == p.charAt(j)){
+                i++;
+                j++;
+                if(j == m){
+                    return true;
+                }
+                continue;
+            }else if(i < n && p.charAt(j) != s.charAt(i)){
+                if(j == 0){
+                    i++;
+                }else{
+                    j = lpps[j-1];
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    static void lps(String p, int[] lpps){
+        int len = 0;
+        lpps[0] = 0;
+        int i = 1;
+        int n = p.length();
+        
+        while(i < n){
+            if(p.charAt(i) == p.charAt(len)){
+                len++;
+                lpps[i] = len;
+                i++;
+            }else{
+                if(len == 0){
+                    lpps[i] = 0;
+                    i++;
+                }else{
+                    len = lpps[len-1];
+                }
+            }
+        }
+    }
+}
