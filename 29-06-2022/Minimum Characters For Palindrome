@@ -1,0 +1,34 @@
+
+public class Solution {
+
+    public static int minCharsforPalindrome(String str) {
+        StringBuilder sb = new StringBuilder(str);
+        String mix = sb.toString() + "&" + sb.reverse().toString();
+        int[] lps = new int[mix.length()];
+        findLps(lps, mix);
+        
+        return str.length() - lps[mix.length()-1];
+    }
+    
+    public static void findLps(int[] lps, String str){
+        lps[0] = 0;
+        int i = 1;
+        int len = 0;
+        int n = str.length();
+        while(i < n){
+            if(str.charAt(i) == str.charAt(len)){
+                len++;
+                lps[i] = len;
+                i++;
+            }else{
+                if(len == 0){
+                    lps[i] = 0;
+                    i++;
+                }else{
+                    len = lps[len-1];
+                }
+            }
+        }
+    }
+
+}
