@@ -1,0 +1,33 @@
+import java.util.*;
+public class Solution {
+
+    public static int cutLogs(int k, int n) {
+       int[][] dp = new int[k+1][n+1];
+        for(int[] i: dp){
+            Arrays.fill(i, -1);
+        }
+        
+        return cut(k, n, dp);
+    }
+    
+    static int cut(int k, int n, int[][] dp){
+        if(k == 1 || n == 0 || n == 1){
+            return n;
+        }
+        
+        
+        if(dp[k][n] != -1){
+            return dp[k][n];
+        }
+        int min = Integer.MAX_VALUE;
+        
+        for(int i = 1; i <= n; i++){
+            int temp = 1 + Math.max(cut(k-1, i-1, dp), cut(k, n-i, dp));
+            
+            min = Math.min(temp, min);
+        }
+        
+        return dp[k][n] = min;
+    }
+
+}
